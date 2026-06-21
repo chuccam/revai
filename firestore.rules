@@ -1,9 +1,14 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Mỗi user chỉ đọc/ghi được document của chính họ
+    // User chỉ đọc/ghi document của chính họ
     match /users/{userId} {
       allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    // Mã promo: user đã login chỉ được đọc (không được ghi/xóa)
+    match /promo_codes/{code} {
+      allow read: if request.auth != null;
+      allow write: if false; // Chỉ admin qua Firebase Console mới thêm mã
     }
   }
 }

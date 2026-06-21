@@ -442,15 +442,21 @@ $('btn-close-paywall').addEventListener('click', () => $('popup-paywall').classL
 
 $('btn-activate').addEventListener('click', async () => {
   const code = $('input-promo').value.trim().toUpperCase();
-  // Thay bằng logic kiểm tra code thật của bạn
-  const VALID_CODES = ['PREMIUM2024', 'VIP49K'];
-  if (VALID_CODES.includes(code)) {
-    userData.is_premium = true;
-    await db.collection('users').doc(currentUser.uid).update({ is_premium: true });
-    renderSlotBadge();
-    $('popup-paywall').classList.add('hidden');
-    showToast('🎉 Kích hoạt Premium thành công!', 'success');
-  } else {
-    showToast('Mã không hợp lệ.', 'error');
+  if (!code) return;
+  try {
+    // Kiểm tra mã trong Firestore collection 'promo_codes'
+    // Thêm mã vào Firestore Console: promo_codes/{MÃ} = { active: true }
+    const snap = await db.collection('promo_codes').doc(code).get();
+    if (snap.exists && snap.data().active === true) {
+      userData.is_premium = true;
+      await db.collection('users').doc(currentUser.uid).update({ is_premium: true });
+      renderSlotBadge();
+      $('popup-paywall').classList.add('hidden');
+      showToast('🎉 Kích hoạt Premium thành công!', 'success');
+    } else {
+      showToast('Mã không hợp lệ hoặc đã hết hạn.', 'error');
+    }
+  } catch (e) {
+    showToast('Lỗi kiểm tra mã: ' + e.message, 'error');
   }
 });

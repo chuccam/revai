@@ -51,13 +51,17 @@ Link sẽ là: `https://chuccam.github.io/revai`
 
 ---
 
-## 💡 Cách thêm mã Premium thật
+## 💡 Cách thêm mã Premium
 
-Trong `app.js`, tìm dòng:
-```js
-const VALID_CODES = ['PREMIUM2024', 'VIP49K'];
-```
-Thay bằng mã của bạn, hoặc tích hợp với Firestore để lưu/check mã động.
+Mã Premium lưu trong **Firestore** (không hardcode trong code), không bị lộ dù repo public.
+
+Để thêm mã mới:
+1. Firebase Console → **Firestore Database**
+2. Tạo collection **`promo_codes`**
+3. Add document → Document ID = mã (ví dụ: `VIP49K`)
+4. Thêm field: `active` = `true` (boolean)
+
+Để vô hiệu mã: đổi `active` thành `false`.
 
 ---
 

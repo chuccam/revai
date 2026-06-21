@@ -68,11 +68,7 @@ auth.onAuthStateChanged(async (user) => {
   try {
     if (user) {
       currentUser = user;
-      // Tải thông tin user và config hệ thống song song
-      await Promise.all([
-        ensureUserDoc(user),
-        fetchSystemConfig()
-      ]);
+      await ensureUserDoc(user);
       renderUserInfo(user);
       showPage('page-workspace');
       renderSlotBadge();
@@ -181,6 +177,26 @@ dropZone.addEventListener('drop', e => {
 });
 fileInput.addEventListener('change', () => {
   if (fileInput.files[0]) handleFile(fileInput.files[0]);
+});
+
+/* ===== DEMO DATA ===== */
+const DEMO_DATA = [
+  { "Mã đơn hàng": "DH001", "Doanh thu": 150000, "Phí sàn": 15000, "Voucher giảm giá": 10000, "Phí vận chuyển": 15000, "Thực nhận": 110000, "Hoàn hàng": 0 },
+  { "Mã đơn hàng": "DH002", "Doanh thu": 120000, "Phí sàn": 12000, "Voucher giảm giá": 0, "Phí vận chuyển": 35000, "Thực nhận": 73000, "Hoàn hàng": 0 },
+  { "Mã đơn hàng": "DH003", "Doanh thu": 200000, "Phí sàn": 20000, "Voucher giảm giá": 30000, "Phí vận chuyển": 0, "Thực nhận": 150000, "Hoàn hàng": 0 },
+  { "Mã đơn hàng": "DH004", "Doanh thu": 0, "Phí sàn": 0, "Voucher giảm giá": 0, "Phí vận chuyển": 25000, "Thực nhận": -25000, "Hoàn hàng": 180000 },
+  { "Mã đơn hàng": "DH005", "Doanh thu": 180000, "Phí sàn": 18000, "Voucher giảm giá": 15000, "Phí vận chuyển": 18000, "Thực nhận": 129000, "Hoàn hàng": 0 },
+  { "Mã đơn hàng": "DH006", "Doanh thu": 150000, "Phí sàn": 15000, "Voucher giảm giá": 50000, "Phí vận chuyển": 20000, "Thực nhận": 65000, "Hoàn hàng": 0 },
+  { "Mã đơn hàng": "DH007", "Doanh thu": 220000, "Phí sàn": 22000, "Voucher giảm giá": 0, "Phí vận chuyển": 12000, "Thực nhận": 186000, "Hoàn hàng": 0 },
+  { "Mã đơn hàng": "DH008", "Doanh thu": 130000, "Phí sàn": 13000, "Voucher giảm giá": 10000, "Phí vận chuyển": 15000, "Thực nhận": 92000, "Hoàn hàng": 0 },
+  { "Mã đơn hàng": "DH009", "Doanh thu": 0, "Phí sàn": 0, "Voucher giảm giá": 0, "Phí vận chuyển": 30000, "Thực nhận": -30000, "Hoàn hàng": 120000 },
+  { "Mã đơn hàng": "DH010", "Doanh thu": 300000, "Phí sàn": 45000, "Voucher giảm giá": 20000, "Phí vận chuyển": 15000, "Thực nhận": 220000, "Hoàn hàng": 0 }
+];
+
+$('btn-use-demo').addEventListener('click', () => {
+  $('file-info').innerHTML = `📊 <strong>Sử dụng dữ liệu demo</strong> &nbsp; (10 đơn hàng mẫu)`;
+  $('file-info').classList.remove('hidden');
+  processRows(DEMO_DATA);
 });
 
 function handleFile(file) {
@@ -311,6 +327,14 @@ $('btn-analyze').addEventListener('click', async () => {
 
   const customApiKey = getApiKey();
   const usingCustomKey = !!customApiKey;
+
+  // Nếu dùng Key hệ thống và chưa tải, hãy tải từ Firestore ngay lúc này
+  if (!usingCustomKey && !systemApiKey) {
+    setAnalyzeLoading(true);
+    await fetchSystemConfig();
+    setAnalyzeLoading(false);
+  }
+
   const activeKey = customApiKey || systemApiKey;
 
   if (!activeKey) {

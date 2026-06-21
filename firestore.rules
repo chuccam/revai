@@ -10,5 +10,10 @@ service cloud.firestore {
       allow read: if request.auth != null;
       allow write: if false; // Chỉ admin qua Firebase Console mới thêm mã
     }
+    // Cấu hình hệ thống (chứa API Key mặc định): chỉ đọc khi đã login
+    match /system_config/{docId} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
   }
 }

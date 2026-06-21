@@ -7,6 +7,7 @@ let currentUser   = null;
 let userData      = null;   // Firestore document
 let parsedRows    = [];     // Rows từ file Excel/CSV
 let summaryMetrics = {};
+let systemApiKey  = '';     // Gemini API key của hệ thống
 
 // Xử lý kết quả redirect login (chạy ngay khi load trang)
 auth.getRedirectResult().then(async (result) => {
@@ -52,11 +53,26 @@ function getApiKey() {
   return localStorage.getItem('gemini_api_key') || '';
 }
 
+async function fetchSystemConfig() {
+  try {
+    const snap = await db.collection('system_config').doc('gemini').get();
+    if (snap.exists) {
+      systemApiKey = snap.data().apiKey || '';
+    }
+  } catch (e) {
+    console.warn('System Config:', e.message);
+  }
+}
+
 auth.onAuthStateChanged(async (user) => {
   try {
     if (user) {
       currentUser = user;
-      await ensureUserDoc(user);
+      // Tải thông tin user và config hệ thống song song
+      await Promise.all([
+        ensureUserDoc(user),
+        fetchSystemConfig()
+      ]);
       renderUserInfo(user);
       showPage('page-workspace');
       renderSlotBadge();
@@ -67,6 +83,7 @@ auth.onAuthStateChanged(async (user) => {
     } else {
       currentUser = null;
       userData    = null;
+      systemApiKey = '';
       showPage('page-landing');
     }
   } catch (e) {
@@ -136,12 +153,17 @@ $('btn-logout').addEventListener('click', async () => {
 /* ===== API KEY ===== */
 $('btn-save-key').addEventListener('click', () => {
   const key = $('input-apikey').value.trim();
+  if (key === '') {
+    localStorage.removeItem('gemini_api_key');
+    showToast('✅ Đã xóa API Key cá nhân. Sẽ dùng Key hệ thống.', 'success');
+    return;
+  }
   if (key.length < 20) {
     showToast('API Key không hợp lệ (quá ngắn).', 'error');
     return;
   }
   localStorage.setItem('gemini_api_key', key);
-  showToast('✅ Đã lưu API Key!', 'success');
+  showToast('✅ Đã lưu API Key cá nhân!', 'success');
 });
 
 /* ===== FILE UPLOAD ===== */
@@ -278,11 +300,6 @@ function renderMetrics(m) {
 
 /* ===== PHÂN TÍCH GEMINI ===== */
 $('btn-analyze').addEventListener('click', async () => {
-  const apiKey = getApiKey();
-  if (!apiKey) {
-    showToast('Vui lòng nhập và lưu Gemini API Key trước.', 'error');
-    return;
-  }
   if (!currentUser || !userData) {
     showToast('Bạn chưa đăng nhập.', 'error');
     return;
@@ -292,20 +309,31 @@ $('btn-analyze').addEventListener('click', async () => {
     return;
   }
 
-  // Kiểm tra lượt dùng
-  if (!userData.is_premium && userData.free_slots <= 0) {
-    $('popup-paywall').classList.remove('hidden');
+  const customApiKey = getApiKey();
+  const usingCustomKey = !!customApiKey;
+  const activeKey = customApiKey || systemApiKey;
+
+  if (!activeKey) {
+    showToast('Không tìm thấy API Key. Vui lòng nhập API Key cá nhân của bạn ở Bước 1.', 'error');
     return;
+  }
+
+  // Nếu sử dụng Key của hệ thống: kiểm tra giới hạn lượt dùng thử
+  if (!usingCustomKey) {
+    if (!userData.is_premium && userData.free_slots <= 0) {
+      $('popup-paywall').classList.remove('hidden');
+      return;
+    }
   }
 
   setAnalyzeLoading(true);
 
   try {
-    const result = await callGemini(apiKey, summaryMetrics);
+    const result = await callGemini(activeKey, summaryMetrics);
     renderResult(result);
 
-    // Trừ lượt
-    if (!userData.is_premium) {
+    // Nếu dùng Key hệ thống và chưa kích hoạt Premium: Trừ lượt dùng
+    if (!usingCustomKey && !userData.is_premium) {
       userData.free_slots -= 1;
       await db.collection('users').doc(currentUser.uid).update({ free_slots: userData.free_slots });
       renderSlotBadge();

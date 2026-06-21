@@ -8,6 +8,17 @@ let userData      = null;   // Firestore document
 let parsedRows    = [];     // Rows từ file Excel/CSV
 let summaryMetrics = {};
 
+// Xử lý kết quả redirect login (chạy ngay khi load trang)
+auth.getRedirectResult().then(async (result) => {
+  if (result && result.user) {
+    // onAuthStateChanged sẽ xử lý tiếp
+  }
+}).catch((e) => {
+  if (e.code !== 'auth/no-auth-event') {
+    showToast('Đăng nhập thất bại: ' + e.message, 'error');
+  }
+});
+
 const FREE_SLOTS = 3;
 const GEMINI_ENDPOINT = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
 
@@ -93,7 +104,7 @@ function renderSlotBadge() {
 $('btn-google-login').addEventListener('click', async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
   try {
-    await auth.signInWithPopup(provider);
+    await auth.signInWithRedirect(provider);
   } catch (e) {
     showToast('Đăng nhập thất bại: ' + e.message, 'error');
   }

@@ -54,6 +54,9 @@ function getApiKey() {
 
 /* ===== FIREBASE AUTH ===== */
 auth.onAuthStateChanged(async (user) => {
+  // Ẩn loading overlay ngay khi Firebase xác định được auth state
+  $('auth-loading').classList.add('hidden');
+
   if (user) {
     currentUser = user;
     await ensureUserDoc(user);
@@ -72,13 +75,19 @@ auth.onAuthStateChanged(async (user) => {
 });
 
 async function ensureUserDoc(user) {
-  const ref = db.collection('users').doc(user.uid);
-  const snap = await ref.get();
-  if (!snap.exists) {
+  try {
+    const ref = db.collection('users').doc(user.uid);
+    const snap = await ref.get();
+    if (!snap.exists) {
+      userData = { uid: user.uid, email: user.email, free_slots: FREE_SLOTS, is_premium: false };
+      await ref.set(userData);
+    } else {
+      userData = snap.data();
+    }
+  } catch (e) {
+    // Firestore chưa setup xong — dùng userData mặc định, không được logout user
+    console.warn('Firestore:', e.message);
     userData = { uid: user.uid, email: user.email, free_slots: FREE_SLOTS, is_premium: false };
-    await ref.set(userData);
-  } else {
-    userData = snap.data();
   }
 }
 
@@ -104,6 +113,8 @@ function renderSlotBadge() {
 $('btn-google-login').addEventListener('click', async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
   try {
+    // Dùng LOCAL persistence: session giữ >=1 năm (cho đến khi user tự logout)
+    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
     await auth.signInWithRedirect(provider);
   } catch (e) {
     showToast('Đăng nhập thất bại: ' + e.message, 'error');

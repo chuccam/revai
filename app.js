@@ -65,29 +65,25 @@ async function fetchSystemConfig() {
 }
 
 auth.onAuthStateChanged(async (user) => {
-  try {
-    if (user) {
-      currentUser = user;
-      await ensureUserDoc(user);
-      renderUserInfo(user);
-      showPage('page-workspace');
-      renderSlotBadge();
+  // Ẩn loader ngay lập tức
+  $('auth-loading').classList.add('hidden');
 
-      // Khôi phục API key đã lưu
-      const saved = getApiKey();
-      if (saved) $('input-apikey').value = saved;
-    } else {
-      currentUser = null;
-      userData    = null;
-      systemApiKey = '';
-      showPage('page-landing');
-    }
-  } catch (e) {
-    console.error('Error in onAuthStateChanged:', e);
-    showToast('Lỗi xác thực: ' + e.message, 'error');
-  } finally {
-    // Ẩn loading overlay sau khi tất cả logic xử lý hoặc tải dữ liệu hoàn tất
-    $('auth-loading').classList.add('hidden');
+  if (user) {
+    currentUser = user;
+    renderUserInfo(user);
+    showPage('page-workspace');       // Vào workspace NGAY, không chờ Firestore
+
+    // Khôi phục API key đã lưu
+    const saved = getApiKey();
+    if (saved) $('input-apikey').value = saved;
+
+    // Load Firestore data trong background (không block UI)
+    await ensureUserDoc(user);
+    renderSlotBadge();
+  } else {
+    currentUser = null;
+    userData    = null;
+    showPage('page-landing');
   }
 });
 
@@ -130,11 +126,19 @@ function renderSlotBadge() {
 $('btn-google-login').addEventListener('click', async () => {
   const provider = new firebase.auth.GoogleAuthProvider();
   try {
-    // Dùng LOCAL persistence: session giữ >=1 năm (cho đến khi user tự logout)
     await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
-    await auth.signInWithRedirect(provider);
+    await auth.signInWithPopup(provider);
   } catch (e) {
-    showToast('Đăng nhập thất bại: ' + e.message, 'error');
+    // Nếu popup bị block thì fallback sang redirect
+    if (e.code === 'auth/popup-blocked' || e.code === 'auth/popup-closed-by-user') {
+      try {
+        await auth.signInWithRedirect(provider);
+      } catch (e2) {
+        showToast('Đăng nhập thất bại: ' + e2.message, 'error');
+      }
+    } else {
+      showToast('Đăng nhập thất bại: ' + e.message, 'error');
+    }
   }
 });
 

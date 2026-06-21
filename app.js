@@ -52,25 +52,29 @@ function getApiKey() {
   return localStorage.getItem('gemini_api_key') || '';
 }
 
-/* ===== FIREBASE AUTH ===== */
 auth.onAuthStateChanged(async (user) => {
-  // Ẩn loading overlay ngay khi Firebase xác định được auth state
-  $('auth-loading').classList.add('hidden');
+  try {
+    if (user) {
+      currentUser = user;
+      await ensureUserDoc(user);
+      renderUserInfo(user);
+      showPage('page-workspace');
+      renderSlotBadge();
 
-  if (user) {
-    currentUser = user;
-    await ensureUserDoc(user);
-    renderUserInfo(user);
-    showPage('page-workspace');
-    renderSlotBadge();
-
-    // Khôi phục API key đã lưu
-    const saved = getApiKey();
-    if (saved) $('input-apikey').value = saved;
-  } else {
-    currentUser = null;
-    userData    = null;
-    showPage('page-landing');
+      // Khôi phục API key đã lưu
+      const saved = getApiKey();
+      if (saved) $('input-apikey').value = saved;
+    } else {
+      currentUser = null;
+      userData    = null;
+      showPage('page-landing');
+    }
+  } catch (e) {
+    console.error('Error in onAuthStateChanged:', e);
+    showToast('Lỗi xác thực: ' + e.message, 'error');
+  } finally {
+    // Ẩn loading overlay sau khi tất cả logic xử lý hoặc tải dữ liệu hoàn tất
+    $('auth-loading').classList.add('hidden');
   }
 });
 

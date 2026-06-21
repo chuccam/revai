@@ -121,8 +121,8 @@ $('btn-logout').addEventListener('click', async () => {
 /* ===== API KEY ===== */
 $('btn-save-key').addEventListener('click', () => {
   const key = $('input-apikey').value.trim();
-  if (!key.startsWith('AIza')) {
-    showToast('API Key không hợp lệ (phải bắt đầu bằng AIza...)', 'error');
+  if (key.length < 20) {
+    showToast('API Key không hợp lệ (quá ngắn).', 'error');
     return;
   }
   localStorage.setItem('gemini_api_key', key);

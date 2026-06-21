@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Phân Tích Doanh Thu Sàn TMĐT | Tìm Lỗ Ẩn Tức Thì</title>
+  <meta name="description" content="Tool AI miễn phí giúp chủ shop TikTok Shop, Shopee tìm ra lỗ ẩn từ phí sàn, phí ship, hoàn hàng trong vài giây." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ===== LANDING (chưa login) ===== -->
+  <div id="page-landing" class="page active">
+    <div class="landing-bg"></div>
+    <div class="landing-content">
+      <div class="badge">🔥 FREE · Chạy 100% trên trình duyệt của bạn</div>
+      <h1>AI Phân Tích<br /><span class="gradient-text">Lỗ Ẩn Doanh Thu</span></h1>
+      <p class="subtitle">Ném file báo cáo TikTok Shop / Shopee vào đây — AI sẽ chỉ ra đúng những chi phí đang "bốc hơi" tiền của bạn trong vài giây.</p>
+
+      <div class="trust-badges">
+        <span>🔒 Không upload file lên server</span>
+        <span>⚡ Phân tích trong &lt;10 giây</span>
+        <span>🎁 3 lượt dùng thử miễn phí</span>
+      </div>
+
+      <button id="btn-google-login" class="btn-primary btn-google">
+        <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.34-8.16 2.34-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+        Đăng nhập bằng Google để bắt đầu
+      </button>
+
+      <p class="disclaimer">Dữ liệu kinh doanh của bạn không rời khỏi máy tính. An toàn tuyệt đối.</p>
+    </div>
+  </div>
+
+  <!-- ===== WORKSPACE (đã login) ===== -->
+  <div id="page-workspace" class="page">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-logo">⚡ RevAI</div>
+      <div class="header-right">
+        <div id="slot-badge" class="slot-badge"></div>
+        <div id="user-avatar-wrap" class="user-avatar-wrap">
+          <img id="user-avatar" src="" alt="avatar" />
+          <span id="user-name"></span>
+          <button id="btn-logout" class="btn-logout">Đăng xuất</button>
+        </div>
+      </div>
+    </header>
+
+    <main class="workspace">
+
+      <!-- Step 1: API Key -->
+      <section class="card step-card" id="step-apikey">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h2>Gemini API Key <span class="tag-free">Miễn phí</span></h2>
+          <p class="step-desc">Key chỉ lưu trên trình duyệt, không gửi về bất kỳ server nào của chúng tôi.</p>
+          <div class="input-row">
+            <input type="password" id="input-apikey" placeholder="AIza..." autocomplete="off" />
+            <button id="btn-save-key" class="btn-secondary">Lưu Key</button>
+          </div>
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" class="guide-link">📖 Hướng dẫn lấy API Key miễn phí trong 1 phút →</a>
+        </div>
+      </section>
+
+      <!-- Step 2: Upload file -->
+      <section class="card step-card" id="step-upload">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h2>Tải lên File Báo cáo</h2>
+          <p class="step-desc">Hỗ trợ file <strong>.xlsx, .xls</strong> hoặc <strong>.csv</strong> từ TikTok Shop, Shopee, Lazada.</p>
+          <div id="drop-zone" class="drop-zone">
+            <div class="drop-icon">📂</div>
+            <p>Kéo thả file vào đây hoặc <label for="file-input" class="browse-link">chọn file</label></p>
+            <input type="file" id="file-input" accept=".csv,.xlsx,.xls" hidden />
+            <p class="drop-hint">Tối đa 20MB</p>
+          </div>
+          <div id="file-info" class="file-info hidden"></div>
+        </div>
+      </section>
+
+      <!-- Step 3: Chỉ số tổng quan -->
+      <section class="card step-card" id="step-summary" style="display:none">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h2>Chỉ số Tổng quan</h2>
+          <div id="metrics-grid" class="metrics-grid"></div>
+          <button id="btn-analyze" class="btn-primary btn-analyze">
+            <span id="btn-analyze-text">🤖 Phân tích Lỗ Ẩn bằng AI</span>
+            <span id="btn-analyze-spinner" class="spinner hidden"></span>
+          </button>
+        </div>
+      </section>
+
+      <!-- Kết quả AI -->
+      <section id="section-result" class="card result-card hidden">
+        <div id="result-snapshot">
+          <div class="result-header">
+            <h2>🔍 Báo cáo AI – Phân tích Lỗ Ẩn</h2>
+            <div id="result-shop-meta" class="result-meta"></div>
+          </div>
+          <div id="result-anomalies" class="anomalies-list"></div>
+          <div id="result-summary-box" class="summary-box"></div>
+          <div class="result-footer-brand">⚡ RevAI · revai.app · Phân tích tự động bằng Gemini</div>
+        </div>
+        <button id="btn-screenshot" class="btn-secondary btn-screenshot">📸 Tải ảnh kết quả về (khoe Facebook)</button>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- ===== POPUP HẾT LƯỢT ===== -->
+  <div id="popup-paywall" class="popup-overlay hidden">
+    <div class="popup-box">
+      <div class="popup-icon">🔒</div>
+      <h3>Bạn đã dùng hết 3 lượt thử miễn phí</h3>
+      <p>Nhập mã kích hoạt Premium hoặc ủng hộ tác giả 49k để mở khóa <strong>không giới hạn lượt</strong>.</p>
+      <div class="input-row">
+        <input type="text" id="input-promo" placeholder="Nhập mã kích hoạt..." />
+        <button id="btn-activate" class="btn-primary">Kích hoạt</button>
+      </div>
+      <div class="qr-section">
+        <p class="qr-label">Hoặc quét QR ủng hộ 49k:</p>
+        <div class="qr-placeholder">[ QR Code ở đây ]</div>
+        <p class="qr-note">Sau khi chuyển khoản, nhắn tin Zalo <strong>0xxx.xxx.xxx</strong> kèm email để nhận mã.</p>
+      </div>
+      <button id="btn-close-paywall" class="btn-ghost">Đóng</button>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+  <!-- Firebase (v9 compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script src="firebase-config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

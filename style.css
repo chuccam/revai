@@ -324,7 +324,21 @@ body {
   border-radius: var(--radius-sm);
   padding: 12px 16px;
   font-size: 13px; color: #6ee7b7;
+  margin-top: 14px;
 }
+
+.demo-data-wrap {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-top: 14px; font-size: 13px; color: var(--text-muted);
+}
+.btn-demo-link {
+  background: none; border: none;
+  color: var(--accent2); cursor: pointer;
+  font-size: 13px; font-weight: 600;
+  text-decoration: underline; text-underline-offset: 3px;
+  padding: 0; transition: opacity 0.15s;
+}
+.btn-demo-link:hover { opacity: 0.8; }
 
 /* ===== METRICS GRID ===== */
 .metrics-grid {

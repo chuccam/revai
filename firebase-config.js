@@ -1,14 +1,10 @@
-// ============================================================
-// firebase-config.js  –  THAY THẾ CÁC GIÁ TRỊ BÊN DƯỚI
-// Vào Firebase Console → Project Settings → Your apps → Web app
-// ============================================================
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey:            "AIzaSyCdYpOhwk2kTLI65ppr5a-SRIIDnOOXuXs",
+  authDomain:        "revai-8f2e9.firebaseapp.com",
+  projectId:         "revai-8f2e9",
+  storageBucket:     "revai-8f2e9.firebasestorage.app",
+  messagingSenderId: "963879082947",
+  appId:             "1:963879082947:web:974b53aebea7b6afecfb76"
 };
 
 firebase.initializeApp(firebaseConfig);

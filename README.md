@@ -12,12 +12,12 @@ git init
 git add .
 git commit -m "init: RevAI MVP"
 git branch -M main
-git remote add origin https://github.com/USERNAME/revai.git
+git remote add origin https://github.com/chuccam/revai.git
 git push -u origin main
 ```
 
 Sau đó vào **GitHub → Settings → Pages → Source: main / root** → Save.  
-Link sẽ là: `https://USERNAME.github.io/revai`
+Link sẽ là: `https://chuccam.github.io/revai`
 
 ---
 
@@ -38,7 +38,7 @@ Link sẽ là: `https://USERNAME.github.io/revai`
 
 ### 4. Thêm domain được phép (sau khi deploy)
 - Firebase Console → Authentication → Settings → Authorized domains
-- Thêm `USERNAME.github.io`
+- Thêm `chuccam.github.io`
 
 ---
 

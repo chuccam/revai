@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Phân Tích Doanh Thu Sàn TMĐT | Tìm Lỗ Ẩn Tức Thì</title>
-  <meta name="description" content="Tool AI miễn phí giúp chủ shop TikTok Shop, Shopee tìm ra lỗ ẩn từ phí sàn, phí ship, hoàn hàng trong vài giây." />
+  <title>AI E-Commerce Revenue Analyzer | Find Hidden Losses Instantly</title>
+  <meta name="description" content="Free AI tool helping TikTok Shop and Shopee sellers identify hidden losses from platform fees, shipping, and returns in seconds." />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -16,7 +16,7 @@
   <div id="auth-loading" class="auth-loading">
     <div class="auth-loading-inner">
       <div class="auth-spinner"></div>
-      <p>Đang kiểm tra phiên đăng nhập...</p>
+      <p>Checking login session...</p>
     </div>
   </div>
 
@@ -24,22 +24,22 @@
   <div id="page-landing" class="page active">
     <div class="landing-bg"></div>
     <div class="landing-content">
-      <div class="badge">🔥 FREE · Chạy 100% trên trình duyệt của bạn</div>
-      <h1>AI Phân Tích<br /><span class="gradient-text">Lỗ Ẩn Doanh Thu</span></h1>
-      <p class="subtitle">Ném file báo cáo TikTok Shop / Shopee vào đây — AI sẽ chỉ ra đúng những chi phí đang "bốc hơi" tiền của bạn trong vài giây.</p>
+      <div class="badge">🔥 FREE · Runs 100% in your browser</div>
+      <h1>AI Analysis of<br /><span class="gradient-text">Hidden Revenue Losses</span></h1>
+      <p class="subtitle">Drop your TikTok Shop / Shopee report file here — AI will pinpoint exactly where you are losing money in seconds.</p>
 
       <div class="trust-badges">
-        <span>🔒 Không upload file lên server</span>
-        <span>⚡ Phân tích trong &lt;10 giây</span>
-        <span>🎁 3 lượt dùng thử miễn phí</span>
+        <span>🔒 No files uploaded to server</span>
+        <span>⚡ Analysis in &lt;10 seconds</span>
+        <span>🎁 3 free trial runs</span>
       </div>
 
       <button id="btn-google-login" class="btn-primary btn-google">
         <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.34-8.16 2.34-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-        Đăng nhập bằng Google để bắt đầu
+        Sign in with Google to start
       </button>
 
-      <p class="disclaimer">Dữ liệu kinh doanh của bạn không rời khỏi máy tính. An toàn tuyệt đối.</p>
+      <p class="disclaimer">Your business data never leaves your computer. 100% secure.</p>
     </div>
   </div>
 
@@ -54,7 +54,7 @@
         <div id="user-avatar-wrap" class="user-avatar-wrap">
           <img id="user-avatar" src="" alt="avatar" />
           <span id="user-name"></span>
-          <button id="btn-logout" class="btn-logout">Đăng xuất</button>
+          <button id="btn-logout" class="btn-logout">Log out</button>
         </div>
       </div>
     </header>
@@ -65,13 +65,13 @@
       <section class="card step-card" id="step-apikey">
         <div class="step-num">1</div>
         <div class="step-body">
-          <h2>Gemini API Key <span class="tag-free" style="background:rgba(124,58,237,0.2);border-color:rgba(124,58,237,0.4);color:#c4b5fd">Không bắt buộc</span></h2>
-          <p class="step-desc">Để trống để dùng Key mặc định của hệ thống (giới hạn 3 lượt). Nhập Key của bạn để sử dụng <strong>không giới hạn miễn phí</strong>.</p>
+          <h2>Gemini API Key <span class="tag-free" style="background:rgba(124,58,237,0.2);border-color:rgba(124,58,237,0.4);color:#c4b5fd">Optional</span></h2>
+          <p class="step-desc">Leave blank to use the system default key (limited to 3 runs). Enter your own key for <strong>unlimited free usage</strong>.</p>
           <div class="input-row">
-            <input type="password" id="input-apikey" placeholder="Nhập API Key cá nhân (AIza...) để dùng không giới hạn..." autocomplete="off" />
-            <button id="btn-save-key" class="btn-secondary">Lưu Key</button>
+            <input type="password" id="input-apikey" placeholder="Enter personal API Key (AIza...) for unlimited use..." autocomplete="off" />
+            <button id="btn-save-key" class="btn-secondary">Save Key</button>
           </div>
-          <a href="https://aistudio.google.com/app/apikey" target="_blank" class="guide-link">📖 Hướng dẫn lấy API Key miễn phí trong 1 phút →</a>
+          <a href="https://aistudio.google.com/app/apikey" target="_blank" class="guide-link">📖 1-minute guide to get a free API Key →</a>
         </div>
       </section>
 
@@ -79,17 +79,17 @@
       <section class="card step-card" id="step-upload">
         <div class="step-num">2</div>
         <div class="step-body">
-          <h2>Tải lên File Báo cáo</h2>
-          <p class="step-desc">Hỗ trợ file <strong>.xlsx, .xls</strong> hoặc <strong>.csv</strong> từ TikTok Shop, Shopee, Lazada.</p>
+          <h2>Upload Report File</h2>
+          <p class="step-desc">Supports <strong>.xlsx, .xls</strong> or <strong>.csv</strong> files from TikTok Shop, Shopee, Lazada.</p>
           <div id="drop-zone" class="drop-zone">
             <div class="drop-icon">📂</div>
-            <p>Kéo thả file vào đây hoặc <label for="file-input" class="browse-link">chọn file</label></p>
+            <p>Drag & drop files here or <label for="file-input" class="browse-link">browse file</label></p>
             <input type="file" id="file-input" accept=".csv,.xlsx,.xls" hidden />
-            <p class="drop-hint">Tối đa 20MB</p>
+            <p class="drop-hint">Max 20MB</p>
           </div>
           <div class="demo-data-wrap">
-            <span>Hoặc dùng thử nhanh với:</span>
-            <button id="btn-use-demo" class="btn-demo-link">📊 Dữ liệu demo có sẵn</button>
+            <span>Or quick test with:</span>
+            <button id="btn-use-demo" class="btn-demo-link">📊 Demo data template</button>
           </div>
           <div id="file-info" class="file-info hidden"></div>
         </div>
@@ -99,10 +99,10 @@
       <section class="card step-card" id="step-summary" style="display:none">
         <div class="step-num">3</div>
         <div class="step-body">
-          <h2>Chỉ số Tổng quan</h2>
+          <h2>Overview Metrics</h2>
           <div id="metrics-grid" class="metrics-grid"></div>
           <button id="btn-analyze" class="btn-primary btn-analyze">
-            <span id="btn-analyze-text">🤖 Phân tích Lỗ Ẩn bằng AI</span>
+            <span id="btn-analyze-text">🤖 Analyze Hidden Losses with AI</span>
             <span id="btn-analyze-spinner" class="spinner hidden"></span>
           </button>
         </div>
@@ -112,14 +112,14 @@
       <section id="section-result" class="card result-card hidden">
         <div id="result-snapshot">
           <div class="result-header">
-            <h2>🔍 Báo cáo AI – Phân tích Lỗ Ẩn</h2>
+            <h2>🔍 AI Report – Hidden Loss Analysis</h2>
             <div id="result-shop-meta" class="result-meta"></div>
           </div>
           <div id="result-anomalies" class="anomalies-list"></div>
           <div id="result-summary-box" class="summary-box"></div>
-          <div class="result-footer-brand">⚡ RevAI · chuccam.github.io/revai · Phân tích tự động bằng Gemini</div>
+          <div class="result-footer-brand">⚡ RevAI · chuccam.github.io/revai · Automated analysis by Gemini</div>
         </div>
-        <button id="btn-screenshot" class="btn-secondary btn-screenshot">📸 Tải ảnh kết quả về (khoe Facebook)</button>
+        <button id="btn-screenshot" class="btn-secondary btn-screenshot">📸 Download report image</button>
       </section>
 
     </main>
@@ -129,18 +129,18 @@
   <div id="popup-paywall" class="popup-overlay hidden">
     <div class="popup-box">
       <div class="popup-icon">🔒</div>
-      <h3>Bạn đã dùng hết 3 lượt thử miễn phí</h3>
-      <p>Nhập mã kích hoạt Premium hoặc ủng hộ tác giả 49k để mở khóa <strong>không giới hạn lượt</strong>.</p>
+      <h3>You have run out of 3 free trials</h3>
+      <p>Enter a Premium activation code or support the author to unlock <strong>unlimited runs</strong>.</p>
       <div class="input-row">
-        <input type="text" id="input-promo" placeholder="Nhập mã kích hoạt..." />
-        <button id="btn-activate" class="btn-primary">Kích hoạt</button>
+        <input type="text" id="input-promo" placeholder="Enter activation code..." />
+        <button id="btn-activate" class="btn-primary">Activate</button>
       </div>
       <div class="qr-section">
-        <p class="qr-label">Hoặc quét QR ủng hộ 49k:</p>
-        <div class="qr-placeholder">[ QR Code ở đây ]</div>
-        <p class="qr-note">Sau khi chuyển khoản, nhắn tin Zalo <strong>0xxx.xxx.xxx</strong> kèm email để nhận mã.</p>
+        <p class="qr-label">Or scan QR to support (49k VND / $2):</p>
+        <div class="qr-placeholder">[ QR Code Here ]</div>
+        <p class="qr-note">After transfer, contact Zalo <strong>0xxx.xxx.xxx</strong> with your email to receive code.</p>
       </div>
-      <button id="btn-close-paywall" class="btn-ghost">Đóng</button>
+      <button id="btn-close-paywall" class="btn-ghost">Close</button>
     </div>
   </div>
 
